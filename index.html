@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dance Choreography Finder & Stager (Cloud DB Ver.)</title>
-    <!-- 🔥 Firebase 라이브러리 로드 -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -19,14 +18,12 @@
             --border-color: #333333; 
             --dancer-size: 44px;
         }
-        /* 🛡️ overflow-x: hidden 추가로 Colab iframe 내부 레이어 꼬임 방지 */
         html, body { overflow-x: hidden; }
         body { background-color: var(--bg-color); color: var(--text-color); font-family: sans-serif; margin: 0; padding: 15px; -webkit-text-size-adjust: 100%; position: relative; }
         .container { max-width: 1200px; margin: 0 auto; }
         header { text-align: center; margin-bottom: 30px; padding-right: 60px; } 
         h1 { color: var(--accent-color); font-size: 2rem; margin-bottom: 10px; }
         
-        /* ☰ 상단 오른쪽 메뉴 및 로그인/회원가입 단추 레이아웃 */
         .top-nav-container { position: absolute; top: 15px; right: 15px; display: flex; align-items: center; gap: 15px; z-index: 1000; }
         .hamburger-menu { font-size: 28px; cursor: pointer; user-select: none; transition: color 0.2s; order: 2; }
         .hamburger-menu:hover { color: var(--accent-color); }
@@ -35,7 +32,6 @@
         .auth-btn:hover { background: var(--accent-color); border-color: var(--accent-color); }
         .user-welcome { font-size: 0.8rem; color: var(--text-muted); font-weight: bold; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* 📋 오른쪽 슬라이드 바 (사이드바) - visibility 추가로 클릭 차단 버그 해결 */
         .sidebar { position: fixed; top: 0; right: 0; width: 320px; height: 100%; background-color: var(--card-bg); border-left: 1px solid var(--border-color); z-index: 1500; transform: translateX(100%); visibility: hidden; transition: transform 0.3s ease, visibility 0.3s ease; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; box-shadow: -5px 0 15px rgba(0,0,0,0.5); }
         .sidebar.open { transform: translateX(0); visibility: visible; }
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 20px; flex-shrink: 0; }
@@ -44,7 +40,6 @@
         #sidebarContent { flex: 1; overflow-y: auto; }
         #sidebarFooter { flex-shrink: 0; padding-top: 15px; border-top: 1px solid var(--border-color); display: none; }
 
-        /* 보관함 내 썸네일 리스트 스타일 */
         .project-list-title { font-size: 1.1rem; margin: 0; color: #fff; }
         .project-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
         .project-card { background-color: #2d2d2d; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color); cursor: pointer; transition: transform 0.2s; display: flex; flex-direction: column; }
@@ -57,7 +52,6 @@
         .project-date { font-size: 0.7rem; color: var(--text-muted); }
         .btn-delete-proj { background: none; border: none; color: #ff4757; cursor: pointer; font-size: 0.75rem; padding: 2px 5px; }
 
-        /* 검색 및 기존 UI 구조 */
         .search-section { background-color: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); margin-bottom: 25px; }
         .search-box { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .search-box input { flex: 1; min-width: 200px; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background-color: #2d2d2d; color: white; font-size: 1rem; }
@@ -81,7 +75,6 @@
         .video-meta { font-size: 0.75rem; color: var(--text-muted); display: flex; justify-content: space-between; }
         .status-message { text-align: center; font-size: 1.1rem; color: var(--text-muted); margin-top: 40px; width: 100%; } 
 
-        /* 🔒 회원가입 / 로그인 / 미리보기 모달 공통 팝업 */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(5px); align-items: center; justify-content: center; padding: 15px; box-sizing: border-box; }
         .modal-content { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; width: 100%; max-width: 500px; padding: 25px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: fadeIn 0.25s ease-out; }
         .modal-content.video-modal { max-width: 640px; }
@@ -90,19 +83,16 @@
         .modal-player-container { position: relative; width: 100%; padding-top: 56.25%; border-radius: 8px; overflow: hidden; background: #000; margin-bottom: 15px; }
         .modal-player-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
-        /* 인증 폼 그룹 */
         .auth-form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         .auth-form-group label { font-size: 0.9rem; color: var(--text-muted); }
         .auth-form-group input { padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: #2d2d2d; color: white; font-size: 1rem; }
         
-        /* 🔗 전환 하이퍼링크 스타일 */
         .auth-switch-link { text-align: center; margin-top: 15px; font-size: 0.85rem; color: var(--text-muted); }
         .auth-switch-link a { color: var(--accent-color); text-decoration: none; font-weight: bold; margin-left: 5px; }
         .auth-switch-link a:hover { text-decoration: underline; }
 
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-        /* 동선 작업실(Workspace) */
         .workspace { display: none; background-color: var(--card-bg); border: 2px solid var(--accent-color); border-radius: 12px; padding: 15px; margin-bottom: 30px; }
         .workspace-title { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 15px; gap: 10px; }
         .workspace-layout { display: flex; gap: 20px; flex-direction: column; } 
@@ -118,7 +108,6 @@
         .part-controls { display: flex; gap: 8px; flex-wrap: wrap; }
         .btn-small { height: 35px; padding: 0 12px; font-size: 0.8rem; border-radius: 6px; flex: 1; min-width: 100px; }
 
-        /* 스테이지 */
         .stage-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         .dancer-form { display: flex; gap: 6px; width: 100%; }
         .dancer-form input { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid var(--border-color); background: #2d2d2d; color: white; font-size: 0.9rem; }
@@ -131,9 +120,15 @@
         .stage-floor::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; border-left: 1px dashed rgba(255, 71, 87, 0.4); pointer-events: none; }
         .stage-floor::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed rgba(255, 71, 87, 0.4); pointer-events: none; }
 
-        .dancer-marker { position: absolute; width: var(--dancer-size); height: var(--dancer-size); border-radius: 50%; background-color: var(--accent-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: calc(var(--dancer-size) * 0.32); cursor: move; user-select: none; -webkit-user-select: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transform: translate(-50%, -50%); border: 2px solid white; touch-action: none; }
+        .dancer-marker { position: absolute; width: var(--dancer-size); height: var(--dancer-size); border-radius: 50%; background-color: var(--accent-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: calc(var(--dancer-size) * 0.32); cursor: move; user-select: none; -webkit-user-select: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transform: translate(-50%, -50%); border: 2px solid white; touch-action: none; transition: border-color 0.1s, box-shadow 0.1s; }
+        /* 🔵 마커 선택 표시 CSS 추가 */
+        .dancer-marker.selected { border-color: #00a8ff; box-shadow: 0 0 12px #00a8ff; z-index: 50 !important; }
         .dancer-name-tag { position: absolute; bottom: -22px; white-space: nowrap; background: rgba(0,0,0,0.8); padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; color: #fff; border: 1px solid #444; pointer-events: none; }
         .dancer-delete { position: absolute; top: -4px; right: -4px; width: 18px; height: 18px; background: #fff; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; font-weight: bold; border: 1px solid #000; z-index: 10; }
+
+        /* 🔵 마그네틱 십자선(대칭/정렬 가이드) CSS 추가 */
+        .snap-guide-v { position: absolute; top: 0; bottom: 0; width: 1px; border-left: 1.5px dashed #00a8ff; pointer-events: none; z-index: 1; display: none; }
+        .snap-guide-h { position: absolute; left: 0; right: 0; height: 1px; border-top: 1.5px dashed #00a8ff; pointer-events: none; z-index: 1; display: none; }
 
         @media (min-width: 769px) {
             body { padding: 20px; }
@@ -150,11 +145,9 @@
 </head>
 <body>
 
-<!-- ☰ 상단 우측 고정 버튼 영역 -->
 <div class="top-nav-container">
     <div class="hamburger-menu" onclick="toggleSidebar()">☰</div>
     <div class="auth-status-area" id="authStatusArea">
-        <!-- 🛡️ 파이어베이스 로딩 지연 중에도 버튼이 즉시 보이도록 HTML 기본값으로 배치 -->
         <button class="auth-btn" onclick="openModal('loginModal')">로그인/회원가입</button>
     </div>
 </div>
@@ -163,10 +156,10 @@
     <header>
         <h1>Dance Finder & Stager</h1>
         <p style="font-size:0.9rem; margin:0; color:var(--text-muted);">안무 영상을 탐색하고 파트별 무대 스태이지 동선을 직접 기획해 보세요.</p>
+        <p style="font-size:0.8rem; margin:5px 0 0 0; color:var(--accent-color);">💡 마커를 클릭하여 <b>Ctrl+C / Ctrl+V</b>로 복사 및 붙여넣기가 가능하며, 이동 시 자동으로 대칭선을 잡아줍니다.</p>
     </header>
     
     <main>
-        <!-- 검색 섹션 -->
         <div class="search-section">
             <div class="search-box">
                 <input type="text" id="genreInput" placeholder="춤 장르 입력 (예: K-pop, HipHop)">
@@ -203,7 +196,6 @@
             </div>
         </div>
 
-        <!-- 동선 배치 작업실 -->
         <div class="workspace" id="workspaceContainer">
             <div class="workspace-title">
                 <h2 id="activeVideoTitle" style="margin:0; font-size:1.1rem; max-width:55%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">🎬 동선 제작 중</h2>
@@ -233,37 +225,36 @@
                         <h3 style="margin:0; font-size:1rem;">🕺 STAGE FLOOR</h3>
                         <div class="size-slider-container">
                             <span>마커 크기</span>
-                            <input type="range" id="sizeSlider" min="30" max="75" value="44" oninput="changeMarkerSize(this.value)">
+                            <input type="range" id="sizeSlider" min="10" max="75" value="44" oninput="changeMarkerSize(this.value)">
                         </div>
                         <div class="dancer-form">
                             <input type="text" id="dancerNameInput" placeholder="댄서 이름/번호" onkeypress="if(event.key==='Enter') addDancer()">
                             <button class="btn btn-small btn-search" onclick="addDancer()">등록</button>
                         </div>
                     </div>
-                    <div class="stage-floor" id="stageFloor"></div>
+                    <div class="stage-floor" id="stageFloor">
+                        <div id="guideV" class="snap-guide-v"></div>
+                        <div id="guideH" class="snap-guide-h"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 유튜브 비디오 출력 그리드 -->
         <div class="video-grid" id="videoGrid">
             <div class="status-message">장르를 입력하고 검색을 시작해 주세요!</div>
         </div>
     </main>
 </div>
 
-<!-- 📋 오른쪽 보관함 사이드바 -->
 <div id="projectSidebar" class="sidebar">
     <div class="sidebar-header">
         <h3 class="project-list-title">📁 내 프로젝트 보관함 (Cloud)</h3>
         <span class="sidebar-close" onclick="toggleSidebar()">&times;</span>
     </div>
     <div id="sidebarContent"></div>
-    <!-- 🚪 3줄 메뉴 맨 아래쪽에 배치될 로그아웃 영역 -->
     <div id="sidebarFooter"></div>
 </div>
 
-<!-- 🔍 영상 미리보기 팝업 모달 -->
 <div id="previewModal" class="modal">
     <div class="modal-content video-modal">
         <span class="modal-close" onclick="closePreviewModal()">&times;</span>
@@ -275,7 +266,6 @@
     </div>
 </div>
 
-<!-- 🔐 회원가입 모달 -->
 <div id="signupModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal('signupModal')">&times;</span>
@@ -296,7 +286,6 @@
     </div>
 </div>
 
-<!-- 🔓 로그인 모달 -->
 <div id="loginModal" class="modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal('loginModal')">&times;</span>
@@ -346,6 +335,23 @@
     let loggedInUserEmail = null;
     let loggedInUid = null;
 
+    // 🔵 마커 선택 및 복사를 위한 글로벌 변수
+    let selectedDancerId = null;
+    let copiedDancer = null;
+
+    // 🔵 로컬 저장소 자동 저장/불러오기 함수 (새 탭 열 때 데이터 보존용)
+    function saveLocalData() {
+        localStorage.setItem('danceStagerData', JSON.stringify(choreographyData));
+    }
+    function loadLocalData() {
+        try {
+            const saved = localStorage.getItem('danceStagerData');
+            if (saved) choreographyData = JSON.parse(saved);
+        } catch(e) { console.error("로컬 데이터 로드 에러:", e); }
+    }
+    // 페이지 접속 즉시 백업본 로드
+    loadLocalData();
+
     auth.onAuthStateChanged(user => {
         if (user) {
             loggedInUserEmail = user.email;
@@ -366,26 +372,18 @@
         if (!authArea || !sidebarFooter) return;
 
         if (loggedInUid) {
-            authArea.innerHTML = `
-                <span class="user-welcome" title="${loggedInUserEmail}">👤 ${loggedInUserEmail.split('@')[0]}님</span>
-            `;
+            authArea.innerHTML = `<span class="user-welcome" title="${loggedInUserEmail}">👤 ${loggedInUserEmail.split('@')[0]}님</span>`;
             sidebarFooter.style.display = 'block';
-            sidebarFooter.innerHTML = `
-                <button class="auth-btn" style="width:100%; height:40px; background:#ff4757; border-color:#ff4757;" onclick="processLogout()">로그아웃</button>
-            `;
+            sidebarFooter.innerHTML = `<button class="auth-btn" style="width:100%; height:40px; background:#ff4757; border-color:#ff4757;" onclick="processLogout()">로그아웃</button>`;
             if (saveBtn) saveBtn.style.display = 'inline-flex';
         } else {
-            authArea.innerHTML = `
-                <button class="auth-btn" onclick="openModal('loginModal')">로그인/회원가입</button>
-            `;
+            authArea.innerHTML = `<button class="auth-btn" onclick="openModal('loginModal')">로그인/회원가입</button>`;
             sidebarFooter.style.display = 'none';
             sidebarFooter.innerHTML = '';
             if (saveBtn) saveBtn.style.display = 'none';
         }
         const sidebar = document.getElementById('projectSidebar');
-        if (sidebar && sidebar.classList.contains('open')) {
-            renderSidebarContent();
-        }
+        if (sidebar && sidebar.classList.contains('open')) renderSidebarContent();
     }
 
     function openModal(modalId) { document.getElementById(modalId).style.display = 'flex'; }
@@ -516,6 +514,7 @@
         db.collection('projects').doc(`${loggedInUid}_${currentVideoId}`).set(projectPayload)
             .then(() => {
                 alert('구글 클라우드 데이터베이스(Firestore)에 동선이 안전하게 백업되었습니다!');
+                saveLocalData(); // 파이어베이스 백업 시 로컬에도 동기화
                 renderSidebarContent();
             })
             .catch(err => { alert('클라우드 저장 실패: ' + err.message); });
@@ -528,6 +527,7 @@
                 const project = doc.data();
                 choreographyData[project.videoId] = project.savedChoreography;
                 
+                saveLocalData(); // 서버에서 불러온 데이터도 로컬에 자동 보관
                 toggleSidebar(); 
                 openWorkspace(project.videoId, project.videoTitle);
                 alert('클라우드 동선 데이터를 성공적으로 불러왔습니다!');
@@ -666,9 +666,11 @@
 
         if (!choreographyData[videoId]) {
             choreographyData[videoId] = { currentPartIndex: 0, parts: [{ name: "파트 1", dancers: [] }] };
+            saveLocalData(); // 프로젝트 신규 생성 시에도 로컬에 즉시 기록
         }
         document.getElementById('workspaceContainer').style.display = 'block';
         document.getElementById('workspaceContainer').scrollIntoView({ behavior: 'smooth' });
+        selectedDancerId = null; // 워크스페이스 열 때 선택 초기화
         renderParts();
         renderStage();
     }
@@ -708,7 +710,7 @@
 
     function changeMarkerSize(value) { document.documentElement.style.setProperty('--dancer-size', `${value}px`); }
 
-    // 파트 목록 렌더링
+    // 파트(시퀀스) 목록 렌더링
     function renderParts() {
         const partTabs = document.getElementById('partTabs');
         if (!partTabs) return;
@@ -730,6 +732,7 @@
         const clonedDancers = JSON.parse(JSON.stringify(videoData.parts[videoData.currentPartIndex].dancers));
         videoData.parts.push({ name: `파트 ${videoData.parts.length + 1}`, dancers: clonedDancers });
         videoData.currentPartIndex = videoData.parts.length - 1;
+        saveLocalData();
         renderParts(); renderStage();
     }
 
@@ -739,34 +742,56 @@
         if(confirm(`현재 파트를 정말 삭제하시겠습니까?`)) {
             videoData.parts.splice(videoData.currentPartIndex, 1);
             videoData.currentPartIndex = Math.max(0, videoData.currentPartIndex - 1);
+            saveLocalData();
             renderParts(); renderStage();
         }
     }
 
+    // 댄서(마커) 추가/삭제 로직
     function addDancer() {
         const input = document.getElementById('dancerNameInput');
         const dancerName = input.value.trim();
         if(!dancerName) { alert('이름을 입력하세요!'); return; }
-        choreographyData[currentVideoId].parts[choreographyData[currentVideoId].currentPartIndex].dancers.push({
-            id: Date.now() + Math.random().toString(36).substr(2, 5), name: dancerName, x: 50, y: 50  
-        });
-        input.value = ''; renderStage();
+        const newDancer = {
+            id: Date.now() + Math.random().toString(36).substr(2, 5), 
+            name: dancerName, x: 50, y: 50  
+        };
+        choreographyData[currentVideoId].parts[choreographyData[currentVideoId].currentPartIndex].dancers.push(newDancer);
+        saveLocalData();
+        input.value = ''; 
+        selectDancer(newDancer.id); // 방금 추가한 마커 자동 선택
     }
 
     function deleteDancer(id) {
         const currentPart = choreographyData[currentVideoId].parts[choreographyData[currentVideoId].currentPartIndex];
         currentPart.dancers = currentPart.dancers.filter(dancer => dancer.id !== id);
+        if(selectedDancerId === id) selectedDancerId = null;
+        saveLocalData();
         renderStage();
+    }
+
+    // 🔵 마커 선택을 시각적으로 처리하는 함수
+    function selectDancer(id) {
+        selectedDancerId = id;
+        document.querySelectorAll('.dancer-marker').forEach(el => {
+            if(el.dataset.id === id) el.classList.add('selected');
+            else el.classList.remove('selected');
+        });
     }
 
     // 스테이지 렌더링
     function renderStage() {
         const stageFloor = document.getElementById('stageFloor');
         if (!stageFloor) return;
-        stageFloor.innerHTML = ''; 
+        
+        // 기존 렌더링된 댄서 마커만 깔끔하게 제거 (가이드라인은 남겨둠)
+        stageFloor.querySelectorAll('.dancer-marker').forEach(el => el.remove());
+        
         choreographyData[currentVideoId].parts[choreographyData[currentVideoId].currentPartIndex].dancers.forEach(dancer => {
             const marker = document.createElement('div');
-            marker.className = 'dancer-marker';
+            // 선택된 아이디면 CSS 클래스 부여
+            marker.className = `dancer-marker ${selectedDancerId === dancer.id ? 'selected' : ''}`;
+            marker.dataset.id = dancer.id;
             marker.style.left = `${dancer.x}%`; marker.style.top = `${dancer.y}%`;
             marker.innerHTML = `
                 ${dancer.name.substring(0, 2)}
@@ -779,22 +804,67 @@
         });
     }
 
-    // 드래그 앤 드롭 이벤트 바인딩
+    // 🔵 마그네틱/대칭 스냅이 결합된 드래그 앤 드롭 엔진
     function bindDragEvent(element, dancerId) {
         element.onpointerdown = function(event) {
             if(event.target.className === 'dancer-delete') return;
             event.preventDefault();
             element.setPointerCapture(event.pointerId);
+            
+            // 드래그 시작 시 해당 마커를 선택 상태로 전환
+            selectDancer(dancerId);
+
             const stageFloor = document.getElementById('stageFloor');
             const rect = stageFloor.getBoundingClientRect();
+            
+            // 가이드라인 엘리먼트 픽업
+            const guideV = document.getElementById('guideV');
+            const guideH = document.getElementById('guideH');
+            
+            const currentPart = choreographyData[currentVideoId].parts[choreographyData[currentVideoId].currentPartIndex];
 
             function moveAt(clientX, clientY) {
                 let percentX = ((clientX - rect.left) / rect.width) * 100;
                 let percentY = ((clientY - rect.top) / rect.height) * 100;
+                
+                let snappedX = false, snappedY = false;
+                const snapThreshold = 2.5; // 2.5% 거리 내에 들어오면 자석처럼 스냅 작동
+
+                // 1) 10% 단위 그리드 스냅 연산
+                for(let i=0; i<=100; i+=10) {
+                    if(!snappedX && Math.abs(percentX - i) < snapThreshold) { percentX = i; snappedX = true; }
+                    if(!snappedY && Math.abs(percentY - i) < snapThreshold) { percentY = i; snappedY = true; }
+                }
+
+                // 2) 스테이지 위 다른 마커와의 정렬 & 대칭 스냅 연산
+                currentPart.dancers.forEach(other => {
+                    if(other.id === dancerId) return;
+                    
+                    // 가로/세로선 상호 동일 선상 정렬 스냅
+                    if(!snappedX && Math.abs(percentX - other.x) < snapThreshold) { percentX = other.x; snappedX = true; }
+                    if(!snappedY && Math.abs(percentY - other.y) < snapThreshold) { percentY = other.y; snappedY = true; }
+                    
+                    // 중앙 기준 완벽 대칭점 스냅 연산 (100 - 타겟값)
+                    let symX = 100 - other.x;
+                    let symY = 100 - other.y;
+                    if(!snappedX && Math.abs(percentX - symX) < snapThreshold) { percentX = symX; snappedX = true; }
+                    if(!snappedY && Math.abs(percentY - symY) < snapThreshold) { percentY = symY; snappedY = true; }
+                });
+
+                // 스테이지 밖으로 나가지 않도록 한계값 지정
                 percentX = Math.max(0, Math.min(percentX, 100));
                 percentY = Math.max(0, Math.min(percentY, 100));
-                element.style.left = `${percentX}%`; element.style.top = `${percentY}%`;
-                const dancer = choreographyData[currentVideoId].parts[choreographyData[currentVideoId].currentPartIndex].dancers.find(d => d.id === dancerId);
+
+                // 돔에 즉시 반영
+                element.style.left = `${percentX}%`;
+                element.style.top = `${percentY}%`;
+
+                // 십자 가이드라인 시각화
+                if(snappedX) { guideV.style.left = `${percentX}%`; guideV.style.display = 'block'; } else { guideV.style.display = 'none'; }
+                if(snappedY) { guideH.style.top = `${percentY}%`; guideH.style.display = 'block'; } else { guideH.style.display = 'none'; }
+
+                // 데이터 갱신
+                const dancer = currentPart.dancers.find(d => d.id === dancerId);
                 if(dancer) { dancer.x = percentX; dancer.y = percentY; }
             }
 
@@ -803,11 +873,59 @@
             document.addEventListener('pointerup', function onPointerUp(e) {
                 document.removeEventListener('pointermove', onPointerMove);
                 document.removeEventListener('pointerup', onPointerUp);
+                
+                // 마우스 놓으면 가이드라인 제거 후 자동 저장
+                guideV.style.display = 'none';
+                guideH.style.display = 'none';
+                saveLocalData(); 
+                
                 try { element.releasePointerCapture(e.pointerId); } catch(err) {}
             });
         };
         element.ondragstart = function() { return false; };
     }
+
+    // 🔵 마커 복사/붙여넣기 및 단축키(키보드) 제어
+    window.addEventListener('keydown', (e) => {
+        // 입력창에서는 시스템 단축키 무시
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (!currentVideoId) return; // 작업실이 안 켜져있으면 무시
+
+        const currentPart = choreographyData[currentVideoId].parts[choreographyData[currentVideoId].currentPartIndex];
+
+        // [Ctrl + C] 또는 [Cmd + C] - 복사
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'c') {
+            if (selectedDancerId) {
+                const target = currentPart.dancers.find(d => d.id === selectedDancerId);
+                if (target) {
+                    copiedDancer = { name: target.name }; // 이름 등 속성 복사
+                }
+            }
+        }
+        
+        // [Ctrl + V] 또는 [Cmd + V] - 붙여넣기
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
+            if (copiedDancer) {
+                const newDancer = {
+                    id: Date.now() + Math.random().toString(36).substr(2, 5),
+                    name: copiedDancer.name,
+                    x: 50, y: 50 // 중앙에 붙여넣기
+                };
+                currentPart.dancers.push(newDancer);
+                saveLocalData();
+                selectDancer(newDancer.id); // 방금 붙여넣은 댄서 자동 선택
+                renderStage();
+            }
+        }
+        
+        // [Delete] 또는 [Backspace] - 선택한 마커 삭제
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+            if (selectedDancerId) {
+                deleteDancer(selectedDancerId);
+            }
+        }
+    });
+
 </script>
 </body>
 </html>
